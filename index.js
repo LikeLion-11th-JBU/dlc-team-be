@@ -17,8 +17,8 @@ app.get('/', function (req, res) {
 
 //임시 유저 데이터베이스
 const users = [
-  { id: 'asd', pw: '1234', 구분: '교육자' },
-  { id: 'dfg', pw: '5678', 구분: '교육생' },
+  { id: 'asd', pw: '1234', 권한: '교육자' },
+  { id: 'dfg', pw: '5678', 권한: '교육생' },
 ]
 
 //로그인 구현
@@ -78,4 +78,26 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((id, done) => {
   const user = users.find((user) => user.id === id)
   done(null, user)
+})
+
+function 교육생(req, res, next) {
+  if (req.user.권한 === '교육생') {
+    next()
+  } else {
+    res.send('교육생이 아니십니다')
+  }
+}
+function 교육자(req, res, next) {
+  if (req.user.권한 === '교육자') {
+    next()
+  } else {
+    res.send('교육자가 아니십니다')
+  }
+}
+app.get('/video', 교육자, function (req, res) {
+  res.send('강의 개설 페이지입니다')
+})
+
+app.get('/request', 교육생, function (req, res) {
+  res.send('강의 신청 페이지입니다')
 })
