@@ -113,14 +113,28 @@ app.get('/request', 로그인확인, 교육생, function (req, res) {
   res.send('강의 신청 페이지입니다')
 })
 
-app.get('/write', 로그인확인, function (req, res) {
-  res.sendFile(__dirname + '/write.html')
-})
-
 //Q&A 게시판
 
 const posts = require('./sample')
 
 app.get('/Q&A', function (req, res) {
   res.render('Q&A.ejs', { posts })
+})
+
+//작성 페이지
+app.get('/write', 로그인확인, function (req, res) {
+  res.sendFile(__dirname + '/write.html')
+  // console.log(req.user.id)
+})
+
+//작성글 배열에 추가
+app.post('/add', function (req, res) {
+  posts.sample.push({
+    번호: 1,
+    작성자: req.user.id,
+    제목: req.body.title,
+    내용: req.body.detail,
+    날짜: new Date(),
+  })
+  res.redirect('/Q&A')
 })
