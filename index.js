@@ -7,6 +7,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(bodyParser.urlencoded({ extended: true }))
 
+app.set('view engine', 'ejs')
+
 app.listen(3000, function () {
   console.log('Listening on 3000')
 })
@@ -52,7 +54,6 @@ passport.use(
       passReqToCallback: false,
     },
     function (inputid, inputpw, done) {
-      console.log(inputid, inputpw)
       const user = users.find(
         (user) => user.id === inputid && user.pw === inputpw
       )
@@ -80,6 +81,15 @@ passport.deserializeUser((id, done) => {
   done(null, user)
 })
 
+//로그인 확인
+function 로그인확인(req, res, next) {
+  if (req.user) {
+    next()
+  } else {
+    res.send('로그인을 안하셨습니다.')
+  }
+}
+
 function 교육생(req, res, next) {
   if (req.user.권한 === '교육생') {
     next()
@@ -94,10 +104,23 @@ function 교육자(req, res, next) {
     res.send('교육자가 아니십니다')
   }
 }
-app.get('/video', 교육자, function (req, res) {
+
+app.get('/video', 로그인확인, 교육자, function (req, res) {
   res.send('강의 개설 페이지입니다')
 })
 
-app.get('/request', 교육생, function (req, res) {
+app.get('/request', 로그인확인, 교육생, function (req, res) {
   res.send('강의 신청 페이지입니다')
+})
+
+app.get('/write', 로그인확인, function (req, res) {
+  res.sendFile(__dirname + '/write.html')
+})
+
+//Q&A 게시판
+
+const posts = require('./sample')
+
+app.get('/Q&A', function (req, res) {
+  res.render('Q&A.ejs', { posts })
 })
