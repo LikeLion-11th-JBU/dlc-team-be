@@ -25,7 +25,11 @@
       <tbody>
         <tr>
           <th scope="col"><%= posts.sample[i].번호%></th>
-          <th scope="col"><%= posts.sample[i].제목%></th>
+          <th scope="col">
+            <a href="/detail/<%= posts.sample[i].번호 %>"
+              ><%= posts.sample[i].제목%></a
+            >
+          </th>
           <th scope="col"><%= posts.sample[i].작성자%></th>
           <th scope="col"><%= posts.sample[i].날짜%></th>
         </tr>

@@ -114,9 +114,9 @@ app.get('/request', 로그인확인, 교육생, function (req, res) {
 })
 
 //Q&A 게시판
-
+//임시 글
 const posts = require('./sample')
-
+//Q&A 페이지에 임시 글 전송
 app.get('/Q&A', function (req, res) {
   res.render('Q&A.ejs', { posts })
 })
@@ -130,11 +130,19 @@ app.get('/write', 로그인확인, function (req, res) {
 //작성글 배열에 추가
 app.post('/add', function (req, res) {
   posts.sample.push({
-    번호: 1,
+    번호: posts.sample.length + 1,
     작성자: req.user.id,
     제목: req.body.title,
     내용: req.body.detail,
     날짜: new Date(),
   })
   res.redirect('/Q&A')
+})
+
+//작성글 내용 확인
+app.get('/detail/:id', function (req, res) {
+  const data = posts.sample.find(
+    (data) => data.번호 === parseInt(req.params.id)
+  )
+  res.render('detail.ejs', { data })
 })
