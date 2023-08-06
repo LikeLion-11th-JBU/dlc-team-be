@@ -2,10 +2,12 @@ const express = require('express')
 const app = express()
 
 const bodyParser = require('body-parser')
+const methodOverride = require('method-override')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 
 app.set('view engine', 'ejs')
 
@@ -122,7 +124,7 @@ app.get('/Q&A', function (req, res) {
 })
 
 //작성 페이지
-app.get('/write', 로그인확인, function (req, res) {
+app.get('/Q&A/write', 로그인확인, function (req, res) {
   res.sendFile(__dirname + '/write.html')
   // console.log(req.user.id)
 })
@@ -145,4 +147,16 @@ app.get('/detail/:id', function (req, res) {
     (data) => data.번호 === parseInt(req.params.id)
   )
   res.render('detail.ejs', { data })
+})
+
+//글 수정
+app.get('/detail/:id/rewrite', function (req, res) {
+  let data = posts.sample.find((data) => data.번호 === parseInt(req.params.id))
+  res.render('rewrite.ejs', { data })
+})
+app.put('/rewrite', function (req, res) {
+  let data = posts.sample.find((data) => data.번호 === parseInt(req.body.id))
+  data.제목 = req.body.title
+  data.내용 = req.body.detail
+  res.redirect('/Q&A')
 })

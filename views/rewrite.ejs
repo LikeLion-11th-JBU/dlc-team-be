@@ -12,38 +12,34 @@
     <div
       class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm"
     ></div>
-    <title>Detail</title>
-    <link rel="stylesheet" href="/public/css/css.css" />
+    <title>Rewrite</title>
   </head>
   <body>
-    <div class="board_wrap">
-      <div class="board_title">
-        <strong>Q&A</strong>
-      </div>
-      <div class="board_view_wrap">
-        <div class="board_view">
-          <div class="title"><%= data.제목 %></div>
-          <div class="info">
-            <dl>
-              <dt>글 번호</dt>
-              <dd><%= data.번호%></dd>
-            </dl>
-            <dl>
-              <dt>글쓴이</dt>
-              <dd><%= data.작성자 %></dd>
-            </dl>
-            <dl>
-              <dt>작성일</dt>
-              <dd><%= data.날짜 %></dd>
-            </dl>
-          </div>
-          <div class="cont"><%= data.내용 %></div>
+    <div class="container mt-3">
+      <form action="/rewrite?_method=PUT" method="post">
+        <div class="form-group">
+          <label>글 제목</label>
+          <input value="<%= data.번호 %>" name="id" style="display: none" />
+          <input
+            type="text"
+            class="form-control"
+            name="title"
+            value="<%= data.제목 %>"
+            placeholder="제목"
+          />
         </div>
-        <div class="bt_wrap">
-          <a href="/Q&A" class="on">목록</a>
-          <a href="<%= data.번호 %>/rewrite">수정</a>
+        <div class="form-group">
+          <label>내용</label>
+          <input
+            type="text"
+            class="form-control"
+            name="detail"
+            value="<%= data.내용 %>"
+            placeholder="내용을 적어주세요"
+          />
         </div>
-      </div>
+        <button type="submit" class="btn btn-outline-secondary">Submit</button>
+      </form>
     </div>
     <!-- Optional JavaScript; choose one of the two! -->
 
