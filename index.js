@@ -152,7 +152,11 @@ app.get('/detail/:id', function (req, res) {
 //글 수정
 app.get('/detail/:id/rewrite', function (req, res) {
   let data = posts.sample.find((data) => data.번호 === parseInt(req.params.id))
-  res.render('rewrite.ejs', { data })
+  if (req.user.id == data.작성자) {
+    res.render('rewrite.ejs', { data })
+  } else {
+    res.send('해당 아이디로 수정할 수 없습니다.')
+  }
 })
 app.put('/rewrite', function (req, res) {
   let data = posts.sample.find((data) => data.번호 === parseInt(req.body.id))
