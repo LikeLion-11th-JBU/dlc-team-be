@@ -16,29 +16,15 @@
   </head>
   <body>
     <div class="container mt-3">
-      <form action="/rewrite?_method=PUT" method="post">
+      <form action="/delete?_method=DELETE" method="post">
         <div class="form-group">
           <label>글 제목</label>
           <input value="<%= data.번호 %>" name="id" style="display: none" />
-          <input
-            type="text"
-            class="form-control"
-            name="title"
-            value="<%= data.제목 %>"
-            placeholder="제목"
-          />
-        </div>
+          <a><%= data.제목 %></a>
         <div class="form-group">
           <label>내용</label>
-          <input
-            type="text"
-            class="form-control"
-            name="detail"
-            value="<%= data.내용 %>"
-            placeholder="내용을 적어주세요"
-          />
-        </div>
-        <button type="submit" class="btn btn-outline-secondary">Submit</button>
+          <a><%= data.내용 %></a>
+        <button type="submit" class="btn btn-outline-secondary">삭제</button>
       </form>
     </div>
     <!-- Optional JavaScript; choose one of the two! -->

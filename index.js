@@ -88,7 +88,9 @@ function 로그인확인(req, res, next) {
   if (req.user) {
     next()
   } else {
-    res.send('로그인을 안하셨습니다.')
+    res.send(
+      "<script>alert('로그인하지않았습니다'); location.href='/login';</script>"
+    )
   }
 }
 
@@ -96,14 +98,14 @@ function 교육생(req, res, next) {
   if (req.user.권한 === '교육생') {
     next()
   } else {
-    res.send('교육생이 아니십니다')
+    res.send("<script>alert('교육생이 아닙니다')</script>")
   }
 }
 function 교육자(req, res, next) {
   if (req.user.권한 === '교육자') {
     next()
   } else {
-    res.send('교육자가 아니십니다')
+    res.send("<script>alert('교육자가 아닙니다')</script>")
   }
 }
 
@@ -150,17 +152,32 @@ app.get('/detail/:id', function (req, res) {
 })
 
 //글 수정
-app.get('/detail/:id/rewrite', function (req, res) {
+app.get('/detail/:id/rewrite', 로그인확인, function (req, res) {
   let data = posts.sample.find((data) => data.번호 === parseInt(req.params.id))
   if (req.user.id == data.작성자) {
     res.render('rewrite.ejs', { data })
   } else {
-    res.send('해당 아이디로 수정할 수 없습니다.')
+    res.send("<script>alert('작성자가 아닙니다')</script>")
   }
 })
 app.put('/rewrite', function (req, res) {
   let data = posts.sample.find((data) => data.번호 === parseInt(req.body.id))
   data.제목 = req.body.title
   data.내용 = req.body.detail
+  res.redirect('/Q&A')
+})
+
+//글 삭제
+app.get('/detail/:id/delete', 로그인확인, function (req, res) {
+  let data = posts.sample.find((data) => data.번호 === parseInt(req.params.id))
+  if (req.user.id == data.작성자) {
+    res.render('delete.ejs', { data })
+  } else {
+    res.send("<script>alert('작성자가 아닙니다')</script>")
+  }
+})
+app.delete('/delete', function (req, res) {
+  let data = posts.sample.find((data) => data.번호 === parseInt(req.params.id))
+  posts.sample.pop(data)
   res.redirect('/Q&A')
 })
