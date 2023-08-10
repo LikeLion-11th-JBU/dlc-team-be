@@ -181,3 +181,32 @@ app.delete('/delete', function (req, res) {
   posts.sample.pop(data)
   res.redirect('/Q&A')
 })
+
+//파일업로드
+app.get('/upload', function (req, res) {
+  res.render('upload.ejs')
+})
+
+const multer = require('multer')
+
+//파일 저장 디렉토리 설정
+const storage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, 'upload/')
+  },
+  filename: function (req, file, callback) {
+    callback(null, file.originalname)
+  },
+})
+
+//파일 업로드 미들웨어 생성
+const upload = multer({ storage: storage })
+
+//파일 업로드 처리
+app.post('/upload', upload.single('file'), (req, res) => {
+  if (!req.file) {
+    res.status(400).send('파일이 업로드되지 않았습니다.')
+    return
+  }
+  console.log('업로드 완료!')
+})
