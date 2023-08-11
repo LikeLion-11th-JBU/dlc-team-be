@@ -109,17 +109,13 @@ function 교육자(req, res, next) {
   }
 }
 
-app.get('/video', 로그인확인, 교육자, function (req, res) {
-  res.send('강의 개설 페이지입니다')
-})
-
 app.get('/request', 로그인확인, 교육생, function (req, res) {
   res.send('강의 신청 페이지입니다')
 })
 
 //Q&A 게시판
 //임시 글
-const posts = require('./sample')
+const posts = require('./route/sample')
 //Q&A 페이지에 임시 글 전송
 app.get('/Q&A', function (req, res) {
   res.render('Q&A.ejs', { posts })
@@ -167,7 +163,7 @@ app.put('/rewrite', function (req, res) {
   res.redirect('/Q&A')
 })
 
-//글 삭제
+//글 삭제 페이지
 app.get('/detail/:id/delete', 로그인확인, function (req, res) {
   let data = posts.sample.find((data) => data.번호 === parseInt(req.params.id))
   if (req.user.id == data.작성자) {
@@ -176,6 +172,7 @@ app.get('/detail/:id/delete', 로그인확인, function (req, res) {
     res.send("<script>alert('작성자가 아닙니다')</script>")
   }
 })
+//글 삭제 기능
 app.delete('/delete', function (req, res) {
   let data = posts.sample.find((data) => data.번호 === parseInt(req.params.id))
   posts.sample.pop(data)
@@ -209,4 +206,66 @@ app.post('/upload', upload.single('file'), (req, res) => {
     return
   }
   console.log('업로드 완료!')
+  res.redirect('/video')
+})
+
+//강의 개설페이지
+app.get('/video', 로그인확인, 교육자, function (req, res) {
+  res.send('강의 개설 페이지입니다')
+})
+
+const videos = require('./route/video')
+const fs = require('fs')
+
+//강의 목록 페이지
+app.get('/learnlist', function (req, res) {
+  res.render('learnlist.ejs', { videos })
+})
+//강의 영상 경로 변수
+let filePath = ''
+//강의 시청 페이지
+app.get('/learn/:id', function (req, res) {
+  const watch = videos.video.find(
+    (watch) => watch.번호 === parseInt(req.params.id)
+  )
+  filePath = `./upload/${watch.강의}`
+  res.render('learn.ejs', { watch })
+})
+
+app.get('/watchVideo/:id', function (req, res) {
+  console.log(filePath)
+  const fileStat = fs.statSync(filePath)
+  const { size } = fileStat
+  const { range } = req.headers
+
+  // 범위에 대한 요청이 있을 경우
+  if (range) {
+    // bytes= 부분을 없애고 - 단위로 문자열을 자름
+    const parts = range.replace(/bytes=/, '').split('-')
+    // 시작 부분의 문자열을 정수형으로 변환
+    const start = parseInt(parts[0])
+    // 끝 부분의 문자열을 정수형으로 변환 (끝 부분이 없으면 총 파일 사이즈에서 - 1)
+    const end = parts[1] ? parseInt(parts[1]) : size - 1
+    // 내보낼 부분의 길이
+    const chunk = end - start + 1
+    // 시작 부분과 끝 부분의 스트림을 읽음
+    const stream = fs.createReadStream(filePath, { start, end })
+    // 응답
+    res.writeHead(206, {
+      'Content-Range': `bytes ${start}-${end}/${size}`,
+      'Accept-Ranges': 'bytes',
+      'Content-Length': chunk,
+      'Content-Type': 'video/mp4',
+    })
+    // 스트림을 내보냄
+    stream.pipe(res)
+  } else {
+    // 범위에 대한 요청이 아님
+    res.writeHead(200, {
+      'Content-Length': size,
+      'Content-Type': 'video/mp4',
+    })
+    // 스트림을 만들고 응답에 실어보냄
+    fs.createReadStream(filePath).pipe(res)
+  }
 })
