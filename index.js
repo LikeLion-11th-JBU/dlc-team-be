@@ -205,13 +205,22 @@ app.post('/upload', upload.single('file'), (req, res) => {
     res.status(400).send('파일이 업로드되지 않았습니다.')
     return
   }
+  videos.video.push({
+    번호: videos.video.length + 1,
+    강의: req.file.originalname,
+    제목: req.body.videoTitle,
+    교육자: req.user.id,
+    업로드일자: new Date(),
+  })
+
   console.log('업로드 완료!')
   res.redirect('/video')
 })
 
 //강의 개설페이지
 app.get('/video', 로그인확인, 교육자, function (req, res) {
-  res.send('강의 개설 페이지입니다')
+  const watch = videos.video.filter((watch) => watch.교육자 === req.user.id)
+  res.render('video.ejs', { watch })
 })
 
 const videos = require('./route/video')
@@ -231,9 +240,8 @@ app.get('/learn/:id', function (req, res) {
   filePath = `./upload/${watch.강의}`
   res.render('learn.ejs', { watch })
 })
-
+//영상 재생 기능
 app.get('/watchVideo/:id', function (req, res) {
-  console.log(filePath)
   const fileStat = fs.statSync(filePath)
   const { size } = fileStat
   const { range } = req.headers

@@ -23,25 +23,34 @@
     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
       <div class="card-deck mb-3 text-center d-flex justify-content-center">
         <form
-          action="upload"
-          method="post"
-          enctype="multipart/form-data"
-          onsubmit="return validateFileName()"
-        >
-          <div class="card mb-4 shadow-sm">
-            <div class="card-header">
-              <h4 class="my-0 font-weight-normal">파일업로드</h4>
-            </div>
-            <div class="card-body">
-              <input type="file" name="file" />
-              <input
-                type="submit"
-                style="width: 100pt; height: 40pt"
-                value="파일제출"
-              />
-            </div>
+        action="upload"
+        method="post"
+        enctype="multipart/form-data"
+        onsubmit="return validateForm()"
+      >
+        <div class="card mb-4 shadow-sm">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">파일업로드</h4>
           </div>
-        </form>
+          <div class="card-body">
+            <label for="videoTitle">영상 제목</label>
+            <input
+              type="text"
+              id="videoTitle"
+              name="videoTitle"
+              class="form-control"
+              placeholder="영상 제목을 입력하세요"
+              required
+            />
+            <br />
+            <input type="file" name="file" />
+            <input
+              type="submit"
+              style="width: 100pt; height: 40pt"
+              value="파일제출"
+            />
+          </div>
+        </div>
       </div>
     </div>
 
