@@ -3,6 +3,8 @@ const app = express()
 
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
+const MongoClient = require('mongodb').MongoClient
+require('dotenv').config()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -11,8 +13,14 @@ app.use(methodOverride('_method'))
 
 app.set('view engine', 'ejs')
 
-app.listen(3000, function () {
-  console.log('Listening on 3000')
+let db
+
+MongoClient.connect(process.env.MONGO_URL, function (err, client) {
+  if (err) return console.log(err)
+  db = client.db('DLC')
+  app.listen(3000, function () {
+    console.log('Listening on 3000')
+  })
 })
 
 app.get('/', function (req, res) {
@@ -93,7 +101,7 @@ function 로그인확인(req, res, next) {
     )
   }
 }
-
+//권한 검사
 function 교육생(req, res, next) {
   if (req.user.권한 === '교육생') {
     next()
@@ -108,6 +116,49 @@ function 교육자(req, res, next) {
     res.send("<script>alert('교육자가 아닙니다')</script>")
   }
 }
+
+//비밀번호 암호화 모듈
+const bcrypt = require('bcryptjs')
+const User = require('./models/User')
+
+//회원가입
+app.get('/register', function (req, res) {
+  res.render('register.ejs')
+})
+
+app.post('/register', async function (req, res) {
+  const { 이름, 아이디, 비밀번호, 성별, 전화번호, 핸드폰, 이메일, 역할 } =
+    req.body
+
+  try {
+    let user = await db.collection('users').findOne({ 이메일 })
+    if (user) {
+      return res
+        .status(400)
+        .json({ errors: [{ message: '이미 가입된 이메일입니다.' }] })
+        .send("<script>alert('이미 가입된 이메일입니다')</script>")
+    }
+
+    const hashedPassword = await bcrypt.hash(비밀번호, 10)
+    user = new User({
+      이름,
+      아이디,
+      비밀번호: hashedPassword,
+      성별,
+      전화번호,
+      핸드폰,
+      이메일,
+      역할,
+    })
+
+    db.collection('users').insertOne(user)
+
+    res.redirect('/login')
+  } catch (error) {
+    console.log(error)
+    res.status(500).send('오류 발생')
+  }
+})
 
 app.get('/request', 로그인확인, 교육생, function (req, res) {
   res.send('강의 신청 페이지입니다')
@@ -277,3 +328,5 @@ app.get('/watchVideo/:id', function (req, res) {
     fs.createReadStream(filePath).pipe(res)
   }
 })
+
+//강의 신청 게시판
