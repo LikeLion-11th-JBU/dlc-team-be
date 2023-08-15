@@ -26,11 +26,11 @@
           <div class="info">
             <dl>
               <dt>글 번호</dt>
-              <dd><%= data.번호%></dd>
+              <dd><%= data._id%></dd>
             </dl>
             <dl>
               <dt>글쓴이</dt>
-              <dd><%= data.작성자 %></dd>
+              <dd><%= data.작성자이름 %></dd>
             </dl>
             <dl>
               <dt>작성일</dt>
@@ -41,8 +41,8 @@
         </div>
         <div class="bt_wrap">
           <a href="/Q&A" class="on">목록</a>
-          <a href="<%= data.번호 %>/rewrite">수정</a>
-          <a href="<%= data.번호 %>/delete">삭제</a>
+          <a href="<%= data._id %>/rewrite">수정</a>
+          <a href="<%= data._id %>/delete">삭제</a>
         </div>
       </div>
     </div>

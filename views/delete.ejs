@@ -12,14 +12,14 @@
     <div
       class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm"
     ></div>
-    <title>Rewrite</title>
+    <title>삭제</title>
   </head>
   <body>
     <div class="container mt-3">
-      <form action="/delete?_method=DELETE" method="post">
+      <form action="/delete" method="post">
         <div class="form-group">
           <label>글 제목</label>
-          <input value="<%= data.번호 %>" name="id" style="display: none" />
+          <input value="<%= data._id %>" name="id" style="display: none" />
           <a><%= data.제목 %></a>
         <div class="form-group">
           <label>내용</label>

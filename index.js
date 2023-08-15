@@ -173,70 +173,115 @@ app.get('/request', 로그인확인, 교육생, function (req, res) {
   res.send('강의 신청 페이지입니다')
 })
 
-//Q&A 게시판
-//임시 글
-const posts = require('./route/sample')
-//Q&A 페이지에 임시 글 전송
+//Q&A(건의사항)게시판
 app.get('/Q&A', function (req, res) {
-  res.render('Q&A.ejs', { posts })
+  db.collection('posts')
+    .find({ 구분: '건의사항' })
+    .toArray()
+    .then((result) => {
+      res.render('Q&A.ejs', { posts: result })
+    })
 })
 
 //작성 페이지
 app.get('/Q&A/write', 로그인확인, function (req, res) {
-  res.sendFile(__dirname + '/write.html')
-  // console.log(req.user.id)
+  res.render('/writeQ&A.ejs')
 })
 
 //작성글 배열에 추가
-app.post('/add', function (req, res) {
-  posts.sample.push({
-    번호: posts.sample.length + 1,
-    작성자: req.user.id,
-    제목: req.body.title,
-    내용: req.body.detail,
-    날짜: new Date(),
-  })
+app.post('/addQ&A', function (req, res) {
+  db.collection('postCounter').findOne(
+    { name: '글개수' },
+    function (err, result) {
+      var totalposts = result.postscounter
+
+      db.collection('posts').insertOne(
+        {
+          _id: totalposts + 1,
+          제목: req.body.title,
+          내용: req.body.detail,
+          날짜: new Date(),
+          작성자아이디: req.user.아이디,
+          작성자이름: req.user.이름,
+          구분: '건의사항',
+        },
+        function (err, result) {
+          db.collection('postCounter').updateOne(
+            { name: '글개수' },
+            {
+              $inc: { postscounter: 1 },
+              function(err, result) {
+                if (err) {
+                  return console.log(err)
+                }
+              },
+            }
+          )
+        }
+      )
+    }
+  )
   res.redirect('/Q&A')
 })
 
 //작성글 내용 확인
 app.get('/detail/:id', function (req, res) {
-  const data = posts.sample.find(
-    (data) => data.번호 === parseInt(req.params.id)
+  db.collection('posts').findOne(
+    { _id: parseInt(req.params.id) },
+    function (err, result) {
+      res.render('detail.ejs', { data: result })
+    }
   )
-  res.render('detail.ejs', { data })
 })
 
 //글 수정
 app.get('/detail/:id/rewrite', 로그인확인, function (req, res) {
-  let data = posts.sample.find((data) => data.번호 === parseInt(req.params.id))
-  if (req.user.id == data.작성자) {
-    res.render('rewrite.ejs', { data })
-  } else {
-    res.send("<script>alert('작성자가 아닙니다')</script>")
-  }
+  db.collection('posts').findOne(
+    { _id: parseInt(req.params.id) },
+    function (err, result) {
+      if (req.user.아이디 == result.작성자아이디) {
+        res.render('rewrite.ejs', { data: result })
+      } else {
+        res.send("<script>alert('작성자가 아닙니다')</script>")
+      }
+    }
+  )
 })
 app.put('/rewrite', function (req, res) {
-  let data = posts.sample.find((data) => data.번호 === parseInt(req.body.id))
-  data.제목 = req.body.title
-  data.내용 = req.body.detail
+  db.collection('posts').updateOne(
+    { _id: parseInt(req.body.id) },
+    {
+      $set: {
+        제목: req.body.title,
+        내용: req.body.detail,
+        날짜: new Date(),
+      },
+    }
+  )
   res.redirect('/Q&A')
 })
 
 //글 삭제 페이지
 app.get('/detail/:id/delete', 로그인확인, function (req, res) {
-  let data = posts.sample.find((data) => data.번호 === parseInt(req.params.id))
-  if (req.user.id == data.작성자) {
-    res.render('delete.ejs', { data })
-  } else {
-    res.send("<script>alert('작성자가 아닙니다')</script>")
-  }
+  db.collection('posts').findOne(
+    { _id: parseInt(req.params.id) },
+    function (err, result) {
+      if (req.user.아이디 == result.작성자아이디) {
+        res.render('delete.ejs', { data: result })
+      } else {
+        res.send("<script>alert('작성자가 아닙니다')</script>")
+      }
+    }
+  )
 })
 //글 삭제 기능
-app.delete('/delete', function (req, res) {
-  let data = posts.sample.find((data) => data.번호 === parseInt(req.params.id))
-  posts.sample.pop(data)
-  res.redirect('/Q&A')
+app.post('/delete', function (req, res) {
+  db.collection('posts').deleteOne(
+    { _id: parseInt(req.body.id) },
+    function (err, result) {
+      res.redirect('/Q&A')
+    }
+  )
 })
 
 //파일업로드

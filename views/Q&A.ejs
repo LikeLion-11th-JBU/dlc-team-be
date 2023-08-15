@@ -9,7 +9,7 @@
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
       crossorigin="anonymous"
     />
-    <title>Q&A</title>
+    <title>건의사항</title>
   </head>
   <body>
     <table class="table table-striped">
@@ -21,17 +21,15 @@
           <th scope="col">작성일</th>
         </tr>
       </thead>
-      <% for (var i = 0; i < posts.sample.length; i ++) { %>
+      <% for (var i = 0; i < posts.length; i ++) { %>
       <tbody>
         <tr>
-          <th scope="col"><%= posts.sample[i].번호%></th>
+          <th scope="col"><%= posts[i]._id%></th>
           <th scope="col">
-            <a href="/detail/<%= posts.sample[i].번호 %>"
-              ><%= posts.sample[i].제목%></a
-            >
+            <a href="/detail/<%= posts[i]._id %>"><%= posts[i].제목%></a>
           </th>
-          <th scope="col"><%= posts.sample[i].작성자%></th>
-          <th scope="col"><%= posts.sample[i].날짜%></th>
+          <th scope="col"><%= posts[i].작성자이름%></th>
+          <th scope="col"><%= posts[i].날짜%></th>
         </tr>
       </tbody>
       <% } %>
