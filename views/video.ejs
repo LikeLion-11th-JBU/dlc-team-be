@@ -21,15 +21,15 @@
           <th scope="col">업로드일자</th>
         </tr>
       </thead>
-      <% for (var i = 0; i < watch.length; i ++) { %>
+      <% for (let i = data.length-1; i >= 0 ; i--) { %>
       <tbody>
         <tr>
-          <th scope="col"><%= watch[i].번호%></th>
+          <th scope="col"><%= data[i]._id%></th>
           <th scope="col">
-            <a href="/learn/<%= watch[i].번호 %>"><%= watch[i].제목%></a>
+            <a href="/learn/<%= data[i]._id %>"><%= data[i].제목%></a>
           </th>
-          <th scope="col"><%= watch[i].교육자%></th>
-          <th scope="col"><%= watch[i].업로드일자%></th>
+          <th scope="col"><%= data[i].교육자이름 %></th>
+          <th scope="col"><%= data[i].업로드일자%></th>
         </tr>
       </tbody>
       <% } %>

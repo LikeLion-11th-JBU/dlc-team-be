@@ -21,17 +21,15 @@
           <th scope="col">업로드일자</th>
         </tr>
       </thead>
-      <% for (var i = 0; i < videos.video.length; i ++) { %>
+      <% for (let i = videos.length-1 ; i >= 0; i --) { %>
       <tbody>
         <tr>
-          <th scope="col"><%= videos.video[i].번호%></th>
+          <th scope="col"><%= videos[i]._id%></th>
           <th scope="col">
-            <a href="/learn/<%= videos.video[i].번호 %>"
-              ><%= videos.video[i].제목%></a
-            >
+            <a href="/learn/<%= videos[i]._id %>"><%= videos[i].제목%></a>
           </th>
-          <th scope="col"><%= videos.video[i].교육자%></th>
-          <th scope="col"><%= videos.video[i].업로드일자%></th>
+          <th scope="col"><%= videos[i].교육자이름%></th>
+          <th scope="col"><%= videos[i].업로드일자%></th>
         </tr>
       </tbody>
       <% } %>

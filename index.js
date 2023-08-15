@@ -265,40 +265,69 @@ app.post('/upload', upload.single('file'), (req, res) => {
     res.status(400).send('파일이 업로드되지 않았습니다.')
     return
   }
-  videos.video.push({
-    번호: videos.video.length + 1,
-    강의: req.file.originalname,
-    제목: req.body.videoTitle,
-    교육자: req.user.id,
-    업로드일자: new Date(),
-  })
-
-  console.log('업로드 완료!')
-  res.redirect('/video')
+  db.collection('videoCounter').findOne(
+    { name: '영상개수' },
+    function (err, result) {
+      let 총영상개수 = result.videocounter
+      let video = {
+        _id: 총영상개수 + 1,
+        교육자아이디: req.user.아이디,
+        교육자이름: req.user.이름,
+        제목: req.body.videoTitle,
+        강의: req.file.originalname,
+        업로드일자: new Date(),
+      }
+      db.collection('videos').insertOne(video, function (err, result) {
+        db.collection('videoCounter').updateOne(
+          { name: '영상개수' },
+          { $inc: { videocounter: 1 } },
+          function (err, result) {
+            if (err) {
+              return console.log('저장 완료')
+            }
+            res.redirect('/video')
+          }
+        )
+      })
+    }
+  )
 })
 
 //강의 개설페이지
 app.get('/video', 로그인확인, 교육자, function (req, res) {
-  const watch = videos.video.filter((watch) => watch.교육자 === req.user.id)
-  res.render('video.ejs', { watch })
+  db.collection('videos')
+    .find({ 교육자아이디: req.user.아이디 })
+    .toArray()
+    .then((result) => {
+      res.render('video.ejs', { data: result })
+    })
 })
 
-const videos = require('./route/video')
 const fs = require('fs')
 
 //강의 목록 페이지
-app.get('/learnlist', function (req, res) {
-  res.render('learnlist.ejs', { videos })
+app.get('/learnlist', async function (req, res) {
+  db.collection('videos')
+    .find()
+    .toArray()
+    .then((result) => {
+      console.log(result)
+      res.render('learnlist.ejs', { videos: result })
+    })
 })
 //강의 영상 경로 변수
 let filePath = ''
 //강의 시청 페이지
 app.get('/learn/:id', function (req, res) {
-  const watch = videos.video.find(
-    (watch) => watch.번호 === parseInt(req.params.id)
+  db.collection('videos').findOne(
+    {
+      _id: parseInt(req.params.id),
+    },
+    function (err, result) {
+      filePath = `./upload/${result.강의}`
+      res.render('learn.ejs', { watch: result })
+    }
   )
-  filePath = `./upload/${watch.강의}`
-  res.render('learn.ejs', { watch })
 })
 //영상 재생 기능
 app.get('/watchVideo/:id', function (req, res) {
@@ -306,7 +335,7 @@ app.get('/watchVideo/:id', function (req, res) {
   const { size } = fileStat
   const { range } = req.headers
 
-  // 범위에 대한 요청이 있을 경우
+  // 범위에 대한 req이 있을 경우
   if (range) {
     // bytes= 부분을 없애고 - 단위로 문자열을 자름
     const parts = range.replace(/bytes=/, '').split('-')
@@ -328,7 +357,7 @@ app.get('/watchVideo/:id', function (req, res) {
     // 스트림을 내보냄
     stream.pipe(res)
   } else {
-    // 범위에 대한 요청이 아님
+    // 범위에 대한 req이 아님
     res.writeHead(200, {
       'Content-Length': size,
       'Content-Type': 'video/mp4',
