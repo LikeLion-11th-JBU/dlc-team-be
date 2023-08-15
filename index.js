@@ -168,7 +168,7 @@ app.post('/checkUsername', async (req, res) => {
   const isDuplicate = await db.collection('users').findOne({ 아이디: username })
   res.json({ duplicate: isDuplicate })
 })
-
+//강의 신청 게시판
 app.get('/request', 로그인확인, 교육생, function (req, res) {
   res.send('강의 신청 페이지입니다')
 })
@@ -367,4 +367,12 @@ app.get('/watchVideo/:id', function (req, res) {
   }
 })
 
-//강의 신청 게시판
+//센터 맵
+app.get('/map', function (req, res) {
+  db.collection('center')
+    .find()
+    .toArray()
+    .then((result) => {
+      res.render('map.ejs', { apikey: process.env.API_KEY, data: result })
+    })
+})
