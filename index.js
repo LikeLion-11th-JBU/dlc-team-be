@@ -8,6 +8,7 @@ require('dotenv').config()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
@@ -64,31 +65,35 @@ passport.use(
       passReqToCallback: false,
     },
     function (inputid, inputpw, done) {
-      const user = users.find(
-        (user) => user.id === inputid && user.pw === inputpw
+      db.collection('users').findOne(
+        { 아이디: inputid },
+        function (err, result) {
+          if (err) return done(err)
+          if (!result)
+            return done(null, false, {
+              message: '아이디 정보가 일치하지 않습니다.',
+            })
+          if (bcrypt.compareSync(inputpw, result.비밀번호)) {
+            return done(null, result)
+          } else {
+            return done(null, false, { message: '비밀번호가 틀렸습니다' })
+          }
+        }
       )
-      if (user) {
-        // 로그인 성공
-        return done(null, user)
-      } else {
-        // 로그인 실패
-        return done(null, false, {
-          message: '아이디 또는 비밀번호가 일치하지 않습니다.',
-        })
-      }
     }
   )
 )
 
 // 사용자 정보를 세션에 저장
 passport.serializeUser((user, done) => {
-  done(null, user.id)
+  done(null, user.아이디)
 })
 
 // 세션에서 사용자 정보 가져오기
-passport.deserializeUser((id, done) => {
-  const user = users.find((user) => user.id === id)
-  done(null, user)
+passport.deserializeUser((아이디, done) => {
+  db.collection('users').findOne({ 아이디: 아이디 }, function (err, result) {
+    done(null, result)
+  })
 })
 
 //로그인 확인
@@ -103,14 +108,14 @@ function 로그인확인(req, res, next) {
 }
 //권한 검사
 function 교육생(req, res, next) {
-  if (req.user.권한 === '교육생') {
+  if (req.user.역할 === '교육생') {
     next()
   } else {
     res.send("<script>alert('교육생이 아닙니다')</script>")
   }
 }
 function 교육자(req, res, next) {
-  if (req.user.권한 === '교육자') {
+  if (req.user.역할 === '교육자') {
     next()
   } else {
     res.send("<script>alert('교육자가 아닙니다')</script>")
@@ -133,10 +138,7 @@ app.post('/register', async function (req, res) {
   try {
     let user = await db.collection('users').findOne({ 이메일 })
     if (user) {
-      return res
-        .status(400)
-        .json({ errors: [{ message: '이미 가입된 이메일입니다.' }] })
-        .send("<script>alert('이미 가입된 이메일입니다')</script>")
+      res.send("<script>alert('이미 가입된 이메일입니다')</script>")
     }
 
     const hashedPassword = await bcrypt.hash(비밀번호, 10)
@@ -158,6 +160,13 @@ app.post('/register', async function (req, res) {
     console.log(error)
     res.status(500).send('오류 발생')
   }
+})
+
+//아이디 중복체크
+app.post('/checkUsername', async (req, res) => {
+  const { username } = req.body
+  const isDuplicate = await db.collection('users').findOne({ 아이디: username })
+  res.json({ duplicate: isDuplicate })
 })
 
 app.get('/request', 로그인확인, 교육생, function (req, res) {

@@ -113,6 +113,7 @@
                 <div class="invalid-feedback" style="width: 100%">
                   Your username is required.
                 </div>
+                <button id="checkUsername">중복체크</button>
               </div>
             </div>
             <div class="mb-3">
@@ -202,7 +203,11 @@
                 Please enter a valid email address for shipping updates.
               </div>
             </div>
-            <button class="btn btn-primary btn-lg btn-block" type="submit">
+            <button
+              class="btn btn-primary btn-lg btn-block"
+              type="submit"
+              id="registerButton"
+            >
               회원가입하기
             </button>
           </form>
@@ -217,6 +222,7 @@
     ></script>
 
     <script>
+      //성별 입력
       const genderInput = document.getElementById('gender')
       const maleRadio = document.getElementById('male')
       const femaleRadio = document.getElementById('female')
@@ -231,18 +237,67 @@
         genderInput.value = '여성'
       })
 
+      //역할 입력
       const roleInput = document.getElementById('role')
       const instructorRadio = document.getElementById('instructor')
       const studentRadio = document.getElementById('student')
 
-      // 남성 라디오 버튼 클릭 시
+      // 교육자 라디오 버튼 클릭 시
       instructorRadio.addEventListener('click', () => {
         roleInput.value = '교육자'
       })
 
-      // 여성 라디오 버튼 클릭 시
+      // 교육생 라디오 버튼 클릭 시
       studentRadio.addEventListener('click', () => {
         roleInput.value = '교육생'
+      })
+
+      ////중복체크
+      const usernameInput = document.getElementById('username')
+      const checkButton = document.getElementById('checkUsername')
+
+      // 중복체크 버튼 클릭 이벤트 핸들러
+      checkButton.addEventListener('click', () => {
+        const username = usernameInput.value
+        checkDuplicateUsername(username)
+      })
+
+      // 아이디 중복체크 함수
+      function checkDuplicateUsername(username) {
+        event.preventDefault()
+        fetch('/checkUsername', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.duplicate) {
+              alert('이미 사용 중인 아이디입니다.')
+            } else {
+              alert('사용 가능한 아이디입니다.')
+            }
+          })
+          .catch((error) => {
+            console.error('Error:', error)
+            alert('서버와의 통신에 문제가 발생했습니다.')
+          })
+      }
+      ////비밀번호확인 기능
+      const passwordInput = document.getElementById('password')
+      const passwordAgainInput = document.getElementById('passwordAgain')
+      const registerButton = document.getElementById('registerButton')
+
+      registerButton.addEventListener('click', (event) => {
+        const password = passwordInput.value
+        const passwordAgain = passwordAgainInput.value
+
+        if (password !== passwordAgain) {
+          event.preventDefault()
+          alert('비밀번호와 비밀번호 확인이 일치하지 않습니다.')
+        }
       })
     </script>
   </body>
