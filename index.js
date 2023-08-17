@@ -168,9 +168,101 @@ app.post('/checkUsername', async (req, res) => {
   const isDuplicate = await db.collection('users').findOne({ 아이디: username })
   res.json({ duplicate: isDuplicate })
 })
-//강의 신청 게시판
-app.get('/request', 로그인확인, 교육생, function (req, res) {
-  res.send('강의 신청 페이지입니다')
+//공지사항
+app.get('/noti', function (req, res) {
+  db.collection('posts')
+    .find({ 구분: '공지사항' })
+    .toArray()
+    .then((result) => {
+      res.render('noti.ejs', { posts: result })
+    })
+})
+//공지작성 페이지
+app.get('/noti/write', 로그인확인, function (req, res) {
+  res.render('writeNOTI.ejs')
+})
+//작성글 DB에 추가
+app.post('/addNOTI', function (req, res) {
+  db.collection('postCounter').findOne(
+    { name: '글개수' },
+    function (err, result) {
+      var totalposts = result.postscounter
+
+      db.collection('posts').insertOne(
+        {
+          _id: totalposts + 1,
+          제목: req.body.title,
+          내용: req.body.detail,
+          날짜: new Date(),
+          작성자아이디: req.user.아이디,
+          작성자이름: req.user.이름,
+          구분: '공지사항',
+        },
+        function (err, result) {
+          db.collection('postCounter').updateOne(
+            { name: '글개수' },
+            {
+              $inc: { postscounter: 1 },
+              function(err, result) {
+                if (err) {
+                  return console.log(err)
+                }
+              },
+            }
+          )
+        }
+      )
+    }
+  )
+  res.redirect('/noti')
+})
+//정보나눔
+app.get('/info', function (req, res) {
+  db.collection('posts')
+    .find({ 구분: '정보나눔' })
+    .toArray()
+    .then((result) => {
+      res.render('info.ejs', { posts: result })
+    })
+})
+//정보나눔작성페이지
+app.get('/info/write', 로그인확인, function (req, res) {
+  res.render('writeINFO.ejs')
+})
+//작성글 DB에 추가
+app.post('/addINFO', function (req, res) {
+  db.collection('postCounter').findOne(
+    { name: '글개수' },
+    function (err, result) {
+      var totalposts = result.postscounter
+
+      db.collection('posts').insertOne(
+        {
+          _id: totalposts + 1,
+          제목: req.body.title,
+          내용: req.body.detail,
+          날짜: new Date(),
+          작성자아이디: req.user.아이디,
+          작성자이름: req.user.이름,
+          구분: '정보나눔',
+        },
+        function (err, result) {
+          db.collection('postCounter').updateOne(
+            { name: '글개수' },
+            {
+              $inc: { postscounter: 1 },
+              function(err, result) {
+                if (err) {
+                  return console.log(err)
+                }
+              },
+            }
+          )
+        }
+      )
+    }
+  )
+  res.redirect('/info')
 })
 
 //Q&A(건의사항)게시판
@@ -185,10 +277,10 @@ app.get('/Q&A', function (req, res) {
 
 //작성 페이지
 app.get('/Q&A/write', 로그인확인, function (req, res) {
-  res.render('/writeQ&A.ejs')
+  res.render('writeQ&A.ejs')
 })
 
-//작성글 배열에 추가
+//작성글 DB에 추가
 app.post('/addQ&A', function (req, res) {
   db.collection('postCounter').findOne(
     { name: '글개수' },
@@ -258,7 +350,7 @@ app.put('/rewrite', function (req, res) {
       },
     }
   )
-  res.redirect('/Q&A')
+  res.send("<script>alert('글이 수정되었습니다');history.go(-2);</script>")
 })
 
 //글 삭제 페이지
@@ -279,7 +371,7 @@ app.post('/delete', function (req, res) {
   db.collection('posts').deleteOne(
     { _id: parseInt(req.body.id) },
     function (err, result) {
-      res.redirect('/Q&A')
+      res.send("<script>alert('글이 삭제되었습니다');history.go(-3);</script>")
     }
   )
 })
