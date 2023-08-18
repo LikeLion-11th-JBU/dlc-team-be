@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Preview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      html,
+      body {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        width: 100%;
+        height: 200%;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="w-[1518px] h-[1847px] relative overflow-hidden bg-white">
+      <div
+        class="w-[829px] h-[59px] absolute left-[378.5px] top-[593.5px] rounded-[10px] bg-[#eaf6fd] border-2 border-[#bcbcbc]"
+      ></div>
+      <div class="w-[184px] h-[47px] absolute left-12 top-11 bg-white"></div>
+      <div
+        class="w-[91px] h-[25px] absolute left-[1361px] top-[19px] rounded-xl bg-[#d9d9d9]"
+      ></div>
+      <a
+        href="/register"
+        class="absolute left-[1281px] top-[25px] text-xs text-left text-black"
+      >
+        회원가입
+      </a>
+      <a
+        href="/login"
+        class="absolute left-[1391px] top-[25px] text-xs text-left text-black"
+      >
+        로그인
+      </a>
+      <p class="absolute left-[77px] top-[77px] text-xs text-left text-black">
+        digital learning center
+      </p>
+      <a
+        href="/bongsa1"
+        class="absolute left-[692px] top-[55px] text-lg font-bold text-left text-black"
+      >
+        자원봉사
+      </a>
+      <a
+        href="/noti"
+        class="absolute left-[794px] top-[55px] text-lg font-bold text-left text-[#006fd4]"
+      >
+        게시판
+      </a>
+      <a
+        href="/album"
+        class="absolute left-[879px] top-[55px] text-lg font-bold text-left text-black"
+      >
+        자료실
+      </a>
+      <img
+        class="w-[1518px] h-[281px] absolute left-[-1px] top-28"
+        src="/background"
+      /><svg
+        width="1518"
+        height="1"
+        viewBox="0 0 1518 1"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        class="absolute left-[-1px] top-[1688px]"
+        preserveAspectRatio="xMidYMid meet"
+      >
+        <line y1="0.5" x2="1518" y2="0.5" stroke="#E3E3E3"></line>
+      </svg>
+      <p
+        class="absolute left-[502px] top-[1722px] text-[17px] text-left text-black"
+      >
+        개인정보처리방침
+      </p>
+      <p
+        class="absolute left-[659px] top-[1722px] text-[17px] text-left text-black"
+      >
+        이메일추출방지정책
+      </p>
+      <p
+        class="absolute left-[831px] top-[1722px] text-[17px] text-left text-black"
+      >
+        찾아오시는 길
+      </p>
+      <p
+        class="absolute left-[502px] top-[1753px] text-[17px] text-left text-[#9d9d9d]"
+      >
+        <span class="text-[17px] font-light text-left text-[#9d9d9d]"
+          >멋쟁이 사자처럼 중부대학교 </span
+        ><span class="text-[17px] font-medium text-left text-[#9d9d9d]"
+          >DIGITAL LEARNING CENTER</span
+        ><span class="text-[17px] font-light text-left text-[#9d9d9d]">
+          팀 </span
+        ><span class="text-[17px] font-medium text-left text-[#9d9d9d]"
+          >DLC</span
+        >
+      </p>
+      <p
+        class="absolute left-[502px] top-[1774px] text-[17px] font-light text-left text-[#9d9d9d]"
+      >
+        팀명 : DLC
+      </p>
+      <p
+        class="absolute left-[502px] top-[1795px] text-[17px] font-light text-left text-[#9d9d9d]"
+      >
+        주소 : 28912 경기도 고양시 덕양구 대자동 중부대학교
+      </p>
+      <p
+        class="absolute left-[615px] top-[1774px] text-[17px] font-light text-left text-[#9d9d9d]"
+      >
+        고유번호 : 010-1234-5678
+      </p>
+      <p
+        class="absolute left-[856px] top-[1774px] text-[17px] font-light text-left text-[#9d9d9d]"
+      >
+        E-mail : qkudnd1837@naver.com
+      </p>
+      <% for (var i = 0 ; i < posts.length; i++) {%>
+      <p
+        class="w-[34px] h-[13px] absolute left-[410px] top-[731px] text-sm font-medium text-left text-black"
+      >
+        <%= posts[i]._id%>
+      </p>
+      <a
+        href="detail/<%= posts[i]._id %>"
+        class="w-[393px] h-[13px] absolute left-[496px] top-[731px] text-sm font-medium text-left text-black"
+      >
+        <%= posts[i].제목%>
+      </a>
+      <p
+        class="w-[65px] h-[11px] absolute left-[1054px] top-[732px] text-xs font-medium text-left text-[#b3b3b3]"
+      >
+        <%= posts[i].날짜%>
+      </p>
+      <p
+        class="w-[23px] h-[11px] absolute left-[1157px] top-[732px] text-xs font-medium text-left text-[#b3b3b3]"
+      >
+        837
+      </p>
+      <% } %>
+      <div
+        class="w-[89px] h-[34px] absolute left-[476.75px] top-[606.75px] rounded-[5px] bg-white border-[1.5px] border-[#05285b]"
+      ></div>
+      <div
+        class="w-[404px] h-[34px] absolute left-[587.75px] top-[606.75px] rounded-[5px] bg-white border-[1.5px] border-[#05285b]"
+      ></div>
+      <div
+        class="w-24 h-[34px] absolute left-[1006.75px] top-[606.75px] rounded-[5px] bg-white border-[1.5px] border-[#05285b]"
+      ></div>
+      <div
+        class="w-24 h-[34px] absolute left-[1111.75px] top-[1381.75px] rounded-[5px] bg-white border-[1.5px] border-[#05285b]"
+      ></div>
+      <p
+        class="absolute left-[508px] top-[616px] text-[15px] font-medium text-left text-black"
+      >
+        제목
+      </p>
+      <p
+        class="absolute left-[1042px] top-[616px] text-[15px] font-medium text-left text-black"
+      >
+        검색
+      </p>
+      <a
+        href=""
+        class="absolute left-[1138px] top-[1391px] text-[15px] font-medium text-left text-black"
+      >
+        글 쓰기
+      </a>
+      <p
+        class="absolute left-[699px] top-[1393px] text-[15px] font-medium text-left text-[#727272]"
+      >
+        1
+      </p>
+      <p
+        class="absolute left-[735px] top-[1393px] text-[15px] font-medium text-left text-[#727272]"
+      >
+        2
+      </p>
+      <p
+        class="absolute left-[771px] top-[1393px] text-[15px] font-medium text-left text-[#727272]"
+      >
+        3
+      </p>
+      <p
+        class="absolute left-[807px] top-[1393px] text-[15px] font-medium text-left text-[#727272]"
+      >
+        4
+      </p>
+      <p
+        class="absolute left-[843px] top-[1393px] text-[15px] font-medium text-left text-[#727272]"
+      >
+        5
+      </p>
+      <p
+        class="absolute left-[879px] top-[1393px] text-[15px] font-medium text-left text-[#727272]"
+      >
+        6
+      </p>
+      <img
+        src="/logo"
+        class="w-[140px] h-[140px] absolute left-5 top-[-28px] object-cover"
+      />
+      <p class="absolute left-[77px] top-[77px] text-xs text-left text-black">
+        digital learning center
+      </p>
+      <svg
+        width="1518"
+        height="1"
+        viewBox="0 0 1518 1"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        class="absolute left-[-1px] top-[98px]"
+        preserveAspectRatio="xMidYMid meet"
+      >
+        <line y1="0.5" x2="1518" y2="0.5" stroke="#E3E3E3"></line></svg
+      ><img
+        src="/logo"
+        class="w-[126px] h-[126px] absolute left-[296px] top-[1706px] object-cover"
+      />
+      <p
+        class="absolute left-[687px] top-56 text-[49px] font-bold text-left text-white"
+      >
+        정보나눔
+      </p>
+      <div
+        class="w-[829px] h-10 absolute left-[379.5px] top-[732.5px] rounded-sm bg-white border-2 border-[#cbcbcb]"
+      ></div>
+      <div
+        class="w-[829px] h-10 absolute left-[379.5px] top-[772.5px] rounded-sm bg-white border-2 border-[#cbcbcb]"
+      ></div>
+      <div
+        class="w-[829px] h-10 absolute left-[379.5px] top-[1164.5px] rounded-sm bg-white border-2 border-[#cbcbcb]"
+      ></div>
+      <div
+        class="w-[829px] h-10 absolute left-[378.5px] top-[1204.5px] rounded-sm bg-white border-2 border-[#cbcbcb]"
+      ></div>
+      <div
+        class="w-[829px] h-10 absolute left-[379.5px] top-[1244.5px] rounded-sm bg-white border-2 border-[#cbcbcb]"
+      ></div>
+      <div
+        class="w-[829px] h-10 absolute left-[379.5px] top-[1283.5px] rounded-sm bg-white border-2 border-[#cbcbcb]"
+      ></div>
+      <div
+        class="w-[829px] h-10 absolute left-[379.5px] top-[1322.5px] rounded-sm bg-white border-2 border-[#cbcbcb]"
+      ></div>
+      <div
+        class="w-[829px] h-10 absolute left-[379.5px] top-[1125.5px] rounded-sm bg-white border-2 border-[#cbcbcb]"
+      ></div>
+      <div
+        class="w-[829px] h-10 absolute left-[379.5px] top-[1086.5px] rounded-sm bg-white border-2 border-[#cbcbcb]"
+      ></div>
+      <div
+        class="w-[829px] h-10 absolute left-[379.5px] top-[1047.5px] rounded-sm bg-white border-2 border-[#cbcbcb]"
+      ></div>
+      <div
+        class="w-[829px] h-10 absolute left-[379.5px] top-[1008.5px] rounded-sm bg-white border-2 border-[#cbcbcb]"
+      ></div>
+      <div
+        class="w-[829px] h-10 absolute left-[379.5px] top-[968.5px] rounded-sm bg-white border-2 border-[#cbcbcb]"
+      ></div>
+      <div
+        class="w-[829px] h-10 absolute left-[379.5px] top-[928.5px] rounded-sm bg-white border-2 border-[#cbcbcb]"
+      ></div>
+      <div
+        class="w-[829px] h-10 absolute left-[379.5px] top-[889.5px] rounded-sm bg-white border-2 border-[#cbcbcb]"
+      ></div>
+      <div
+        class="w-[829px] h-10 absolute left-[379.5px] top-[849.5px] rounded-sm bg-white border-2 border-[#cbcbcb]"
+      ></div>
+      <div
+        class="w-[829px] h-10 absolute left-[379.5px] top-[812.5px] rounded-sm bg-white border-2 border-[#cbcbcb]"
+      ></div>
+      <svg
+        width="829"
+        height="3"
+        viewBox="0 0 829 3"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        class="absolute left-[379px] top-[681px]"
+        preserveAspectRatio="none"
+      >
+        <line
+          y1="1.5"
+          x2="829"
+          y2="1.5"
+          stroke="#7CA0BB"
+          stroke-width="3"
+        ></line>
+      </svg>
+      <p
+        class="absolute left-[411px] top-[699px] text-base font-medium text-left text-black"
+      >
+        번호
+      </p>
+      <p
+        class="absolute left-[744px] top-[699px] text-base font-medium text-left text-black"
+      >
+        제목
+      </p>
+      <p
+        class="absolute left-[1063px] top-[699px] text-base font-medium text-left text-black"
+      >
+        등록일
+      </p>
+      <p
+        class="absolute left-[1145px] top-[699px] text-base font-medium text-left text-black"
+      >
+        조회수
+      </p>
+      <div
+        class="w-[829px] h-[91px] absolute left-[379.5px] top-[446.5px] rounded-[5px] bg-white border-2 border-[#cdcdcd]"
+      ></div>
+      <p
+        class="absolute left-[461px] top-[479px] text-[25px] font-medium text-left text-black"
+      >
+        게시판
+      </p>
+      <a
+        href="/noti"
+        class="absolute left-[686px] top-[480px] text-[19px] font-medium text-left text-[#7c7c7c]"
+      >
+        공지사항
+      </a>
+      <a
+        href="/info"
+        class="absolute left-[795px] top-[480px] text-[19px] font-bold text-left text-[#006fd4]"
+      >
+        정보나눔
+      </a>
+      <a
+        href="/Q&A"
+        class="absolute left-[904px] top-[480px] text-[19px] font-medium text-left text-[#7c7c7c]"
+      >
+        건의사항
+      </a>
+      <div
+        class="w-[70px] h-1.5 absolute left-[794px] top-[513px] rounded-[3px] bg-[#006fd4]"
+      ></div>
+    </div>
+  </body>
+</html>
