@@ -25,14 +25,8 @@ MongoClient.connect(process.env.MONGO_URL, function (err, client) {
 })
 
 app.get('/', function (req, res) {
-  res.send('홈입니다')
+  res.sendFile(__dirname + '/main.html')
 })
-
-//임시 유저 데이터베이스
-const users = [
-  { id: 'asd', pw: '1234', 권한: '교육자' },
-  { id: 'dfg', pw: '5678', 권한: '교육생' },
-]
 
 //로그인 구현
 
@@ -106,6 +100,16 @@ function 로그인확인(req, res, next) {
     )
   }
 }
+
+// 로그아웃 기능
+app.get('/logout', function (req, res, next) {
+  req.logout(function (err) {
+    if (err) {
+      return next(err)
+    }
+    res.redirect('/')
+  })
+})
 //권한 검사
 function 교육생(req, res, next) {
   if (req.user.역할 === '교육생') {
@@ -127,14 +131,34 @@ const bcrypt = require('bcryptjs')
 const User = require('./models/User')
 
 //회원가입
+//약관동의
+app.get('/registerA', function (req, res) {
+  res.sendFile(__dirname + '/registerAgree.html')
+})
+
 app.get('/register', function (req, res) {
   res.render('register.ejs')
 })
 
 app.post('/register', async function (req, res) {
-  const { 이름, 아이디, 비밀번호, 성별, 전화번호, 핸드폰, 이메일, 역할 } =
-    req.body
-
+  const {
+    이름,
+    아이디,
+    비밀번호,
+    성별,
+    전화번호1,
+    전화번호2,
+    전화번호3,
+    핸드폰1,
+    핸드폰2,
+    핸드폰3,
+    이메일1,
+    이메일2,
+    역할,
+  } = req.body
+  const 전화번호 = 전화번호1 + '-' + 전화번호2 + '-' + 전화번호3
+  const 핸드폰 = 핸드폰1 + '-' + 핸드폰2 + '-' + 핸드폰3
+  const 이메일 = 이메일1 + '@' + 이메일2
   try {
     let user = await db.collection('users').findOne({ 이메일 })
     if (user) {
@@ -162,6 +186,10 @@ app.post('/register', async function (req, res) {
   }
 })
 
+//회원가입 완료
+app.get('/registerend', function (req, res) {
+  res.sendFile(__dirname + '/registerEnd.html')
+})
 //아이디 중복체크
 app.post('/checkUsername', async (req, res) => {
   const { username } = req.body
@@ -448,7 +476,6 @@ app.get('/learnlist', async function (req, res) {
     .find()
     .toArray()
     .then((result) => {
-      console.log(result)
       res.render('learnlist.ejs', { videos: result })
     })
 })
@@ -512,4 +539,157 @@ app.get('/map', function (req, res) {
     .then((result) => {
       res.render('map.ejs', { apikey: process.env.API_KEY, data: result })
     })
+})
+//자원봉사 안내
+app.get('/bongsa1', function (req, res) {
+  res.sendFile(__dirname + '/bongsa1.html')
+})
+//자원봉사 신청서
+app.get('/bongsa2', function (req, res) {
+  res.sendFile(__dirname + '/bongsa2.html')
+})
+//후원안내
+app.get('/bongsa3', function (req, res) {
+  res.sendFile(__dirname + '/bongsa3.html')
+})
+//후원단체
+app.get('/bongsa4', function (req, res) {
+  res.sendFile(__dirname + '/bongsa4.html')
+})
+
+//이미지 라우팅
+//로고
+app.get('/logo', function (req, res) {
+  fs.readFile('./img/logo.png', function (err, data) {
+    res.writeHead(200, { 'Content-Type': 'text/html' })
+    res.end(data)
+  })
+})
+//백그라운드
+app.get('/background', function (req, res) {
+  fs.readFile('./img/background.png', function (err, data) {
+    res.writeHead(200, { 'Content-Type': 'text/html' })
+    res.end(data)
+  })
+})
+//카카오톡
+app.get('/kakaologo', function (req, res) {
+  fs.readFile('./img/ellipse-21.png', function (err, data) {
+    res.writeHead(200, { 'Content-Type': 'text/html' })
+    res.end(data)
+  })
+})
+//페이스북
+app.get('/facebooklogo', function (req, res) {
+  fs.readFile('./img/ellipse-22.png', function (err, data) {
+    res.writeHead(200, { 'Content-Type': 'text/html' })
+    res.end(data)
+  })
+})
+//image-4
+app.get('/image-4', function (req, res) {
+  fs.readFile('./img/image-4.png', function (err, data) {
+    res.writeHead(200, { 'Content-Type': 'text/html' })
+    res.end(data)
+  })
+})
+//마스크 사진
+app.get('/rectangle-4', function (req, res) {
+  fs.readFile('./img/rectangle-4.png', function (err, data) {
+    res.writeHead(200, { 'Content-Type': 'text/html' })
+    res.end(data)
+  })
+})
+
+//rectagle-15
+app.get('/rectangle-15', function (req, res) {
+  fs.readFile('./img/rectangle-15.png', function (err, data) {
+    res.writeHead(200, { 'Content-Type': 'text/html' })
+    res.end(data)
+  })
+})
+
+//rectagle-84
+app.get('/rectangle-84', function (req, res) {
+  fs.readFile('./img/rectangle-84.png', function (err, data) {
+    res.writeHead(200, { 'Content-Type': 'text/html' })
+    res.end(data)
+  })
+})
+//rectagle-127
+app.get('/rectangle-127', function (req, res) {
+  fs.readFile('./img/rectangle-127.png', function (err, data) {
+    res.writeHead(200, { 'Content-Type': 'text/html' })
+    res.end(data)
+  })
+})
+//rectangle-176
+app.get('/rectangle-176', function (req, res) {
+  fs.readFile('./img/rectangle-176.png', function (err, data) {
+    res.writeHead(200, { 'Content-Type': 'text/html' })
+    res.end(data)
+  })
+})
+//rectangle-177
+app.get('/rectangle-177', function (req, res) {
+  fs.readFile('./img/rectangle-177.png', function (err, data) {
+    res.writeHead(200, { 'Content-Type': 'text/html' })
+    res.end(data)
+  })
+})
+//rectangle-192
+app.get('/rectangle-192', function (req, res) {
+  fs.readFile('./img/rectangle-192.png', function (err, data) {
+    res.writeHead(200, { 'Content-Type': 'text/html' })
+    res.end(data)
+  })
+})
+//rectangle-193
+app.get('/rectangle-193', function (req, res) {
+  fs.readFile('./img/rectangle-193.png', function (err, data) {
+    res.writeHead(200, { 'Content-Type': 'text/html' })
+    res.end(data)
+  })
+})
+//rectangle-196
+app.get('/rectangle-196', function (req, res) {
+  fs.readFile('./img/rectangle-196.png', function (err, data) {
+    res.writeHead(200, { 'Content-Type': 'text/html' })
+    res.end(data)
+  })
+})
+//rectangle-200
+app.get('/rectangle-200', function (req, res) {
+  fs.readFile('./img/rectangle-200.png', function (err, data) {
+    res.writeHead(200, { 'Content-Type': 'text/html' })
+    res.end(data)
+  })
+})
+//rectangle-201
+app.get('/rectangle-201', function (req, res) {
+  fs.readFile('./img/rectangle-201.png', function (err, data) {
+    res.writeHead(200, { 'Content-Type': 'text/html' })
+    res.end(data)
+  })
+}) //rectangle-204
+app.get('/rectangle-204', function (req, res) {
+  fs.readFile('./img/rectangle-196.png', function (err, data) {
+    res.writeHead(200, { 'Content-Type': 'text/html' })
+    res.end(data)
+  })
+}) //rectangle-205
+app.get('/rectangle-205', function (req, res) {
+  fs.readFile('./img/rectangle-196.png', function (err, data) {
+    res.writeHead(200, { 'Content-Type': 'text/html' })
+    res.end(data)
+  })
+})
+
+//사진첩
+app.get('/album', function (req, res) {
+  res.sendFile(__dirname + '/album.html')
+})
+//강사자료실
+app.get('/data2', function (req, res) {
+  res.sendFile(__dirname + '/data2.html')
 })

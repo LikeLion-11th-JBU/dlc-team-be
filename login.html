@@ -1,46 +1,230 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-    />
-    <title>로그인</title>
+    <title>Preview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      html,
+      body {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        width: 100%;
+        height: 140%;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+    </style>
   </head>
   <body>
-    <h4 class="container mt-4"><strong>로그인 페이지</strong></h4>
-
-    <div class="container mt-3">
-      <form action="/login" method="POST">
-        <div class="form-group">
-          <label>아이디</label>
-          <input type="text" class="form-control" name="id" />
-        </div>
-        <div class="form-group">
-          <label>비번</label>
-          <input type="text" class="form-control" name="pw" />
-        </div>
-        <button type="submit" class="btn btn-outline-secondary">로그인</button>
-      </form>
-    </div>
-
-    <script
-      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-      crossorigin="anonymous"
-    ></script>
+    <form action="/login" method="POST">
+      <div class="w-[1518px] h-[1050px] relative overflow-hidden bg-white">
+        <div
+          class="w-[323px] h-[368px] absolute left-[342px] top-[424px] rounded-tl-[10px] rounded-bl-[10px] bg-[#eaf6fd]"
+        ></div>
+        <div
+          class="w-[829px] h-[370px] absolute left-[342.5px] top-[421.5px] rounded-[10px] border-2 border-[#bcbcbc]"
+        ></div>
+        <p
+          class="absolute left-[409px] top-[663px] text-[13px] font-light text-left text-[#666]"
+        >
+          <span class="text-[13px] font-light text-left text-[#666]"
+            >서비스를 이용하시기 위해서는 </span
+          ><br /><span class="text-[13px] font-light text-left text-[#666]"
+            >로그인을 하셔야 됩니다. </span
+          ><br /><span class="text-[13px] font-light text-left text-[#666]"
+            >가입하신 아이디와 비밀번호를</span
+          ><br /><span class="text-[13px] font-light text-left text-[#666]"
+            >입력해주세요.</span
+          >
+        </p>
+        <p
+          class="absolute left-[375px] top-[441px] text-[70px] text-left text-[#6eb4d2]"
+        >
+          <span class="text-[70px] text-left text-[#6eb4d2]">member</span
+          ><br /><span class="text-[70px] text-left text-[#6eb4d2]">join</span>
+        </p>
+        <div
+          class="w-[184px] h-[47px] absolute left-56 top-[-5px] bg-white"
+        ></div>
+        <div
+          class="w-[91px] h-[25px] absolute left-[1361px] top-[19px] rounded-xl bg-[#d9d9d9]"
+        ></div>
+        <svg
+          width="1517"
+          height="1"
+          viewBox="0 0 1517 1"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          class="absolute left-0 top-[819px]"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <line
+            x1="0.00195312"
+            y1="0.5"
+            x2="1518"
+            y2="0.5"
+            stroke="#E3E3E3"
+          ></line>
+        </svg>
+        <a
+          href="registerA"
+          class="absolute left-[1281px] top-[25px] text-xs text-left text-black"
+        >
+          회원가입
+        </a>
+        <p
+          class="absolute left-[1391px] top-[25px] text-xs text-left text-black"
+        >
+          로그인
+        </p>
+        <p class="absolute left-[77px] top-[77px] text-xs text-left text-black">
+          digital learning center
+        </p>
+        <img
+          class="w-[1518px] h-[281px] absolute left-[-1px] top-28"
+          src="/background"
+        />
+        <p
+          class="absolute left-[691px] top-[217px] text-[49px] font-bold text-left text-white"
+        >
+          로그인
+        </p>
+        <p
+          class="absolute left-[512px] top-[867px] text-[17px] text-left text-black"
+        >
+          개인정보처리방침
+        </p>
+        <p
+          class="absolute left-[669px] top-[867px] text-[17px] text-left text-black"
+        >
+          이메일추출방지정책
+        </p>
+        <p
+          class="absolute left-[841px] top-[867px] text-[17px] text-left text-black"
+        >
+          찾아오시는 길
+        </p>
+        <p
+          class="absolute left-[512px] top-[898px] text-[17px] text-left text-[#9d9d9d]"
+        >
+          <span class="text-[17px] font-light text-left text-[#9d9d9d]"
+            >멋쟁이 사자처럼 중부대학교 </span
+          ><span class="text-[17px] font-medium text-left text-[#9d9d9d]"
+            >DIGITAL LEARNING CENTER</span
+          ><span class="text-[17px] font-light text-left text-[#9d9d9d]">
+            팀 </span
+          ><span class="text-[17px] font-medium text-left text-[#9d9d9d]"
+            >DLC</span
+          >
+        </p>
+        <p
+          class="absolute left-[512px] top-[919px] text-[17px] font-light text-left text-[#9d9d9d]"
+        >
+          팀명 : DLC
+        </p>
+        <p
+          class="absolute left-[512px] top-[940px] text-[17px] font-light text-left text-[#9d9d9d]"
+        >
+          주소 : 28912 경기도 고양시 덕양구 대자동 중부대학교
+        </p>
+        <p
+          class="absolute left-[625px] top-[919px] text-[17px] font-light text-left text-[#9d9d9d]"
+        >
+          고유번호 : 010-1234-5678
+        </p>
+        <p
+          class="absolute left-[866px] top-[919px] text-[17px] font-light text-left text-[#9d9d9d]"
+        >
+          E-mail : qkudnd1837@naver.com
+        </p>
+        <p
+          class="absolute left-[712px] top-[521px] text-base font-medium text-left text-black"
+        >
+          아이디
+        </p>
+        <input
+          type="text"
+          class="w-[203px] h-[26px] absolute left-[805.25px] top-[517.25px] rounded-[5px] bg-white border-[0.5px] border-black"
+          name="id"
+        />
+        <p
+          class="absolute left-[705px] top-[586px] text-base font-medium text-left text-black"
+        >
+          비밀번호
+        </p>
+        <input
+          type="password"
+          class="w-[203px] h-[26px] absolute left-[805.25px] top-[582.25px] rounded-[5px] bg-white border-[0.5px] border-black"
+          name="pw"
+        />
+        <div
+          class="w-[182px] h-[35px] absolute left-[695px] top-[659px] rounded-[5px] bg-[#a0d0df]"
+        ></div>
+        <p
+          class="absolute left-[704px] top-[663px] text-base font-medium text-left text-white"
+        >
+          아이디/비밀번호 찾기
+        </p>
+        <div
+          class="w-[97px] h-[35px] absolute left-[929px] top-[659px] rounded-[5px] bg-[#a0d0df]"
+        ></div>
+        <p
+          class="absolute left-[949px] top-[664px] text-base font-medium text-left text-white"
+        >
+          회원가입
+        </p>
+        <button
+          type="submit"
+          class="w-[98px] h-[65px] absolute left-[1036px] top-[530px] rounded-[10px] bg-[#5298ad]"
+        ></button>
+        <p
+          class="absolute left-[1062px] top-[553px] text-[17px] font-bold text-left text-white"
+        >
+          로그인
+        </p>
+        <a
+          href="/bongsa1"
+          class="absolute left-[692px] top-[55px] text-lg font-semibold text-left text-black"
+        >
+          자원봉사
+        </a>
+        <a
+          href="/noti"
+          class="absolute left-[794px] top-[55px] text-lg font-semibold text-left text-black"
+        >
+          게시판
+        </a>
+        <a
+          href="/album"
+          class="absolute left-[879px] top-[55px] text-lg font-semibold text-left text-black"
+        >
+          자료실
+        </a>
+        <img
+          src="/logo"
+          class="w-[140px] h-[140px] absolute left-5 top-[-28px] object-cover"
+        />
+        <p class="absolute left-[77px] top-[77px] text-xs text-left text-black">
+          digital learning center
+        </p>
+        <svg
+          width="1518"
+          height="1"
+          viewBox="0 0 1518 1"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          class="absolute left-[-1px] top-[98px]"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <line y1="0.5" x2="1518" y2="0.5" stroke="#E3E3E3"></line></svg
+        ><img
+          src="/logo"
+          class="w-[126px] h-[126px] absolute left-[296px] top-[1152px] object-cover"
+        />
+      </div>
+    </form>
   </body>
 </html>
